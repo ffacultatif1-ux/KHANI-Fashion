@@ -21,8 +21,13 @@ try {
         $nbProd = (int)$db->query("SELECT COUNT(*) FROM produits WHERE actif = 1")->fetchColumn();
         $nbVis = (int)$db->query("SELECT COUNT(*) FROM visiteurs")->fetchColumn();
 
-        // Top produit
-        $top = $db->query("SELECT produits_json, COUNT(*) as c FROM commandes GROUP BY produits_json ORDER BY c DESC LIMIT 1")->fetch();
+        // Top produit — PostgreSQL ne permet pas GROUP BY sur un type json :
+        // on regroupe sur sa représentation texte (resultat identique)
+        if (Database::getInstance()->getDriver() === 'pgsql') {
+            $top = $db->query("SELECT (produits_json::text) as produits_json, COUNT(*) as c FROM commandes GROUP BY (produits_json::text) ORDER BY c DESC LIMIT 1")->fetch();
+        } else {
+            $top = $db->query("SELECT produits_json, COUNT(*) as c FROM commandes GROUP BY produits_json ORDER BY c DESC LIMIT 1")->fetch();
+        }
         $topName = '-';
         if ($top && $top['produits_json']) {
             $prods = json_decode($top['produits_json'], true);
@@ -30,7 +35,7 @@ try {
         }
 
         // 7 derniers jours (syntaxe compatible MySQL et PostgreSQL)
-        $sinceSql = $db->getDriver() === 'pgsql'
+        $sinceSql = Database::getInstance()->getDriver() === 'pgsql'
             ? "created_at >= NOW() - INTERVAL '7 days'"
             : 'created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)';
         $ventes7j = $db->query("SELECT DATE(created_at) as jour, COALESCE(SUM(total),0) as total FROM commandes WHERE {$sinceSql} GROUP BY DATE(created_at) ORDER BY jour")->fetchAll();

@@ -27,7 +27,7 @@ try {
         $data = $_POST ?: getJsonInput();
         $allowed = ['nom_boutique','email','telephone1','telephone2','adresse','whatsapp','devise'];
         // Upsert compatible MySQL et PostgreSQL
-        if ($db->getDriver() === 'pgsql') {
+        if (Database::getInstance()->getDriver() === 'pgsql') {
             $stmt = $db->prepare('INSERT INTO parametres (cle, valeur) VALUES (?,?)
                 ON CONFLICT (cle) DO UPDATE SET valeur = EXCLUDED.valeur, updated_at = CURRENT_TIMESTAMP');
         } else {

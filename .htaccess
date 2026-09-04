@@ -8,8 +8,12 @@ AddDefaultCharset UTF-8
     RewriteEngine On
 </IfModule>
 
-# Sécurité : bloquer l'accès aux fichiers sensibles (secrets, config)
-<FilesMatch "^\.env|\.env\.|config\.php$">
+# Sécurité : bloquer tout accès web aux dossiers de configuration et de classes
+# (les fichiers sont chargés par require_once côté serveur, jamais via HTTP)
+# Voir aussi api/config/.htaccess et api/includes/.htaccess
+
+# Sécurité : bloquer l'accès au fichier des secrets
+<FilesMatch "^\.env|\.env\.">
     Require all denied
 </FilesMatch>
 
