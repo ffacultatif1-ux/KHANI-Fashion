@@ -12,16 +12,29 @@ const API_BASE = 'api/';
 ============================ */
 
 async function api(endpoint, options = {}) {
+    // options.silent = true : n'affiche AUCUN toast d'erreur.
+    // Utilisé pour les tentatives d'appel en mode "secours" (PHP),
+    // où un échec est normal sur GitHub Pages (pas de PHP).
     try {
         const res = await fetch(API_BASE + endpoint, options);
-        const data = await res.json();
-        if (!res.ok || data.success === false) {
-            throw new Error(data.message || 'Erreur API');
+        const raw = await res.text();
+        let data = {};
+        try {
+            data = raw ? JSON.parse(raw) : {};
+        } catch (parseErr) {
+            // Réponse non-JSON (ex : GitHub Pages renvoie le code PHP source)
+            if (!options.silent) {
+                throw new Error('Réponse serveur invalide');
+            }
+            data = {}; // en mode silencieux : on retombe sur le secours
+        }
+        if (!res.ok || (data && data.success === false)) {
+            throw new Error((data && data.message) || 'Erreur API');
         }
         return data;
     } catch (err) {
         console.error('API Error:', err);
-        showToast(err.message, 'error');
+        if (!options.silent) showToast(err.message, 'error');
         throw err;
     }
 }
@@ -72,14 +85,16 @@ function showToast(message, type = 'success') {
 ============================ */
 
 (function trackVisitor() {
-    // 1) Supabase direct (site GitHub Pages)
+    // 1) Supabase direct (site GitHub Pages) : suffit, on s'arrête là
     if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
         SUPABASE.trackVisiteur().catch(() => {});
+        return;
     }
-    // 2) API PHP locale (serveur avec PHP)
+    // 2) API PHP locale (serveur avec PHP) : en silencieux (aucun toast si échec)
     api('stats.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        silent: true
     }).catch(() => {});
 })();
 
@@ -105,12 +120,15 @@ async function loadParametres() {
     }
     // 2) API PHP locale (serveur avec PHP)
     try {
-        const data = await api('parametres.php');
-        PARAMETRES = data.parametres || {};
-        // Mise à jour du footer et contact si les éléments existent
-        updateContactInfo();
+        const data = await api('parametres.php', { silent: true });
+        const p = data.parametres || {};
+        if (Object.keys(p).length > 0) {
+            PARAMETRES = p;
+            updateContactInfo();
+            return;
+        }
     } catch (e) {
-        console.warn('Paramètres non chargés');
+        console.warn('Paramètres PHP indisponibles');
     }
     // 3) Mode de secours statique
     if (typeof FALLBACK_DATA !== 'undefined' && PARAMETRES && Object.keys(PARAMETRES).length === 0) {
@@ -156,11 +174,14 @@ async function loadProduits() {
     }
     // 2) API PHP locale (serveur avec PHP)
     try {
-        const data = await api('produits.php');
-        PRODUITS = data.produits || [];
-        return;
+        const data = await api('produits.php', { silent: true });
+        const prods = data.produits || [];
+        if (prods.length > 0) {
+            PRODUITS = prods;
+            return;
+        }
     } catch (e) {
-        PRODUITS = [];
+        console.warn('Produits PHP indisponibles');
     }
     // 3) Mode de secours statique
     if (PRODUITS.length === 0 && typeof FALLBACK_DATA !== 'undefined') {
@@ -183,11 +204,14 @@ async function loadCategories() {
     }
     // 2) API PHP locale (serveur avec PHP)
     try {
-        const data = await api('categories.php');
-        CATEGORIES = data.categories || [];
-        return;
+        const data = await api('categories.php', { silent: true });
+        const cats = data.categories || [];
+        if (cats.length > 0) {
+            CATEGORIES = cats;
+            return;
+        }
     } catch (e) {
-        CATEGORIES = [];
+        console.warn('Catégories PHP indisponibles');
     }
     // 3) Mode de secours statique
     if (CATEGORIES.length === 0 && typeof FALLBACK_DATA !== 'undefined') {
@@ -447,7 +471,8 @@ async function commanderWhatsApp(e) {
                     paiement: paiement,
                     produits: panier,
                     total: getCartTotal(),
-                })
+                }),
+                silent: true
             });
             urlWhats = data.whatsapp_url || whatsappUrlLocal();
         }
@@ -519,7 +544,8 @@ async function envoyerCommandeRapide(e) {
                     produits: produitsCommande,
                     total: total || 0,
                     notes: fd.get('message'),
-                })
+                }),
+                silent: true
             });
         }
         showToast('Commande envoyée avec succès 🎉');
