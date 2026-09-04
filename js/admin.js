@@ -17,14 +17,26 @@ async function api(endpoint, options = {}) {
             credentials: 'same-origin',
             ...options
         });
-        const data = await res.json();
+        const raw = await res.text();
+
+        // GitHub Pages ne peut pas exécuter PHP : le serveur renvoie
+        // le code source (commentant par "<?php") et non du JSON.
+        // On détecte ça pour afficher un message clair.
+        if (!raw.trim().startsWith('{') && !raw.trim().startsWith('[')) {
+            showToast('Le back-office nécessite un hébergement PHP (InfinityFree). GitHub Pages ne peut pas exécuter PHP.', 'error');
+            throw new Error('Hébergement PHP requis pour le back-office');
+        }
+
+        const data = JSON.parse(raw);
         if (!res.ok || data.success === false) {
             throw new Error(data.message || 'Erreur API');
         }
         return data;
     } catch (err) {
         console.error('API Error:', err);
-        showToast(err.message, 'error');
+        if (!err.message.includes('Hébergement PHP requis')) {
+            showToast(err.message, 'error');
+        }
         throw err;
     }
 }
@@ -640,6 +652,15 @@ async function loadStats() {
 ============================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Détection d'un hébergement statique (GitHub Pages) : PHP indisponible
+    // => on affiche un bandeau d'information clair sur la page de login.
+    const host = (window.location && window.location.hostname) || '';
+    const isGithubPages = host.endsWith('github.io');
+    const ghWarn = document.getElementById('ghPagesWarning');
+    if (ghWarn && isGithubPages) {
+        ghWarn.style.display = 'block';
+    }
+
     // Login form
     const loginForm = document.getElementById('loginForm');
     if (loginForm) loginForm.addEventListener('submit', doLogin);
