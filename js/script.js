@@ -72,6 +72,11 @@ function showToast(message, type = 'success') {
 ============================ */
 
 (function trackVisitor() {
+    // 1) Supabase direct (site GitHub Pages)
+    if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+        SUPABASE.trackVisiteur().catch(() => {});
+    }
+    // 2) API PHP locale (serveur avec PHP)
     api('stats.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
@@ -85,6 +90,20 @@ function showToast(message, type = 'success') {
 let PARAMETRES = {};
 
 async function loadParametres() {
+    // 1) Supabase direct (site GitHub Pages)
+    try {
+        if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+            const p = await SUPABASE.getParametres();
+            if (p && Object.keys(p).length > 0) {
+                PARAMETRES = p;
+                updateContactInfo();
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('Supabase paramètres indisponibles');
+    }
+    // 2) API PHP locale (serveur avec PHP)
     try {
         const data = await api('parametres.php');
         PARAMETRES = data.parametres || {};
@@ -92,6 +111,11 @@ async function loadParametres() {
         updateContactInfo();
     } catch (e) {
         console.warn('Paramètres non chargés');
+    }
+    // 3) Mode de secours statique
+    if (typeof FALLBACK_DATA !== 'undefined' && PARAMETRES && Object.keys(PARAMETRES).length === 0) {
+        PARAMETRES = FALLBACK_DATA.parametres || {};
+        updateContactInfo();
     }
 }
 
@@ -118,20 +142,56 @@ let PRODUITS = [];
 let CATEGORIES = [];
 
 async function loadProduits() {
+    // 1) Supabase direct (site GitHub Pages)
+    try {
+        if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+            const prods = await SUPABASE.getProduits();
+            if (prods && prods.length > 0) {
+                PRODUITS = prods;
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('Supabase produits indisponibles');
+    }
+    // 2) API PHP locale (serveur avec PHP)
     try {
         const data = await api('produits.php');
         PRODUITS = data.produits || [];
+        return;
     } catch (e) {
         PRODUITS = [];
+    }
+    // 3) Mode de secours statique
+    if (PRODUITS.length === 0 && typeof FALLBACK_DATA !== 'undefined') {
+        PRODUITS = FALLBACK_DATA.produits || [];
     }
 }
 
 async function loadCategories() {
+    // 1) Supabase direct (site GitHub Pages)
+    try {
+        if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+            const cats = await SUPABASE.getCategories();
+            if (cats && cats.length > 0) {
+                CATEGORIES = cats;
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn('Supabase catégories indisponibles');
+    }
+    // 2) API PHP locale (serveur avec PHP)
     try {
         const data = await api('categories.php');
         CATEGORIES = data.categories || [];
+        return;
     } catch (e) {
         CATEGORIES = [];
+    }
+    // 3) Mode de secours statique
+    if (CATEGORIES.length === 0 && typeof FALLBACK_DATA !== 'undefined') {
+        CATEGORIES = FALLBACK_DATA.categories || [];
     }
 }
 
@@ -341,45 +401,71 @@ async function commanderWhatsApp(e) {
         return;
     }
 
+    const client = {
+        nom: document.getElementById('nomClient')?.value || '',
+        telephone: document.getElementById('telephoneClient')?.value || '',
+        adresse: document.getElementById('adresseClient')?.value || '',
+        email: document.getElementById('emailClient')?.value || '',
+    };
+    const paiement = document.getElementById('paiementClient')?.value || 'livraison';
+
+    // Lien WhatsApp de secours (si l'enregistrement serveur échoue)
+    const whatsappUrlLocal = () => {
+        const numero = (PARAMETRES.whatsapp || '242061763204').replace(/\D/g, '');
+        let msg = 'Bonjour KHANI Fashion';
+        msg += '%0A%0A';
+        msg += 'Je souhaite commander :';
+        msg += '%0A%0A';
+        panier.forEach(p => {
+            msg += `- ${p.nom} x ${p.quantite} = ${formatPrix(p.prix * p.quantite)} FCFA%0A`;
+        });
+        msg += `%0ATotal : ${formatPrix(getCartTotal())} FCFA`;
+        return `https://wa.me/${numero}?text=${msg}`;
+    };
+
     try {
         // Enregistrer la commande côté serveur
-        const data = await api('commandes.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                client: {
-                    nom: document.getElementById('nomClient')?.value || '',
-                    telephone: document.getElementById('telephoneClient')?.value || '',
-                    adresse: document.getElementById('adresseClient')?.value || '',
-                    email: document.getElementById('emailClient')?.value || '',
-                },
-                paiement: document.getElementById('paiementClient')?.value || 'livraison',
-                produits: panier,
-                total: getCartTotal(),
-            })
-        });
+        let urlWhats = null;
+
+        // 1) Supabase direct (site GitHub Pages)
+        if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+            try {
+                await SUPABASE.createCommande(client, panier, getCartTotal(), paiement, '');
+                urlWhats = whatsappUrlLocal();
+            } catch (eSup) {
+                console.warn('Supabase commande impossible, tentative PHP');
+            }
+        }
+
+        // 2) API PHP locale (serveur avec PHP)
+        if (!urlWhats) {
+            const data = await api('commandes.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    client: client,
+                    paiement: paiement,
+                    produits: panier,
+                    total: getCartTotal(),
+                })
+            });
+            urlWhats = data.whatsapp_url || whatsappUrlLocal();
+        }
 
         // Vider le panier
         savePanier([]);
 
         // Ouvrir WhatsApp
-        if (data.whatsapp_url) {
+        if (urlWhats) {
             showToast('Commande enregistrée 🎉 Redirection WhatsApp...');
-            setTimeout(() => window.open(data.whatsapp_url, '_blank'), 800);
+            setTimeout(() => window.open(urlWhats, '_blank'), 800);
         } else {
             showToast('Commande enregistrée 🎉');
             setTimeout(() => window.location.href = 'index.html', 1500);
         }
     } catch (e) {
         // En cas d'erreur API, on génère quand même un lien WhatsApp local
-        const numero = (PARAMETRES.whatsapp || '242061763204').replace(/\D/g, '');
-        let msg = 'Bonjour KHANI Fashion 👑%0A%0A';
-        msg += 'Je souhaite commander :%0A%0A';
-        panier.forEach(p => {
-            msg += `- ${p.nom} x ${p.quantite} = ${formatPrix(p.prix * p.quantite)} FCFA%0A`;
-        });
-        msg += `%0ATotal : ${formatPrix(getCartTotal())} FCFA`;
-        window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
+        window.open(whatsappUrlLocal(), '_blank');
     }
 }
 
@@ -401,23 +487,41 @@ async function envoyerCommandeRapide(e) {
     const produits = p ? [{ id: p.id, nom: p.nom, prix: Number(p.prix), quantite }] : [];
     const total = produits.reduce((s, x) => s + x.prix * x.quantite, 0);
 
+    const client = {
+        nom: fd.get('nom'),
+        telephone: fd.get('telephone'),
+        email: fd.get('email'),
+        adresse: fd.get('ville'),
+    };
+    const produitsCommande = produits.length ? produits : [{ nom: produit, prix: 0, quantite }];
+
     try {
-        await api('commandes.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                client: {
-                    nom: fd.get('nom'),
-                    telephone: fd.get('telephone'),
-                    email: fd.get('email'),
-                    adresse: fd.get('ville'),
-                },
-                paiement: 'livraison',
-                produits: produits.length ? produits : [{ nom: produit, prix: 0, quantite }],
-                total: total || 0,
-                notes: fd.get('message'),
-            })
-        });
+        let enregistree = false;
+
+        // 1) Supabase direct (site GitHub Pages)
+        if (typeof SUPABASE !== 'undefined' && SUPABASE.isConfigured()) {
+            try {
+                await SUPABASE.createCommande(client, produitsCommande, total || 0, 'livraison', fd.get('message'));
+                enregistree = true;
+            } catch (eSup) {
+                console.warn('Supabase commande rapide impossible, tentative PHP');
+            }
+        }
+
+        // 2) API PHP locale (serveur avec PHP)
+        if (!enregistree) {
+            await api('commandes.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    client: client,
+                    paiement: 'livraison',
+                    produits: produitsCommande,
+                    total: total || 0,
+                    notes: fd.get('message'),
+                })
+            });
+        }
         showToast('Commande envoyée avec succès 🎉');
         form.reset();
     } catch (e) {

@@ -8,6 +8,40 @@ Durée : ~30 minutes. Aucune carte bancaire requise.
 
 ---
 
+## ⭐ Option GitHub Pages : site statique + Supabase (recommandé pour commencer)
+
+Votre boutique est déjà publiée sur GitHub Pages :
+`https://ffacultatif1-ux.github.io/KHANI-Fashion/`
+
+GitHub Pages ne peut **pas** exécuter de PHP. Pour que le site communique
+avec la base de données, le JavaScript se connecte **directement** à l'API
+REST de Supabase (PostgREST) grâce à :
+- `js/config.js`   → URL du projet + clé **anon** (publique, sans danger)
+- `js/supabase.js` → appels à l'API (produits, catégories, paramètres, commandes, visites)
+- `js/fallback.js` → mode de secours : 18 produits affichés si Supabase indisponible
+
+### Étape A — Récupérer la clé anon 🔑
+1. Supabase Dashboard → **Settings** (engrenage) → **API Keys**
+2. Copiez la **`anon` public key** (une longue chaîne commençant par `eyJ...`)
+3. Collez-la dans `js/config.js` → `supabaseAnonKey`
+
+### Étape B — Autoriser les accès publics (SQL)
+1. Supabase Dashboard → **SQL Editor** → New query
+2. Ouvrez `database/rls_supabase_site.sql`, copiez le contenu, cliquez sur **Run**
+   => autorise la lecture publique (produits actifs, catégories, paramètres)
+   et l'écriture publique (commandes, visites).
+   L'administration PHP (rôle `postgres`) n'est PAS affectée par ces règles.
+
+### Étape C — Publier sur GitHub
+1. `git add . && git commit -m "..." && git push` → GitHub Pages se met à jour seul
+2. Visitez votre URL → les vrais produits de Supabase s'affichent 🎉
+   (sans clé configurée, le mode de secours affiche les 18 produits de démonstration)
+
+> ⚠️ Le back-office (`admin/`) nécessite du PHP : utilisez l'hébergement
+> InfinityFree (guide ci-dessous) pour l'administrer.
+
+---
+
 ## Étape 1 — Créer le compte InfinityFree (5 min)
 
 1. Allez sur **https://www.infinityfree.com** → **Register** ( inscription avec votre e-mail,

@@ -95,6 +95,22 @@ KHANI Fashion.com/
 
 ---
 
+## 🌐 Publication sur GitHub Pages (site statique + Supabase)
+
+GitHub Pages ne peut pas exécuter de PHP. Pour faire communiquer le site
+avec la base de données, le JavaScript se connecte directement à l'API
+REST de Supabase (PostgREST) :
+
+1. Copiez la clé **anon** publique dans `js/config.js`
+   (Supabase Dashboard → Settings → API Keys)
+2. Exécutez `database/rls_supabase_site.sql` dans l'éditeur SQL de Supabase
+3. Poussez le code sur GitHub → la boutique affiche les produits de la base
+
+Sans clé configurée, un jeu de données local (`js/fallback.js`, 18 produits)
+permet à la démo de rester fonctionnelle.
+
+---
+
 ## 🛠️ Configuration production
 
 ### 1. Hébergement
