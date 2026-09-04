@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits | KHANI Fashion Admin</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body" data-page="produits">
+
+    <aside class="sidebar">
+        <div class="admin-logo">
+            <i class="fa-solid fa-crown"></i>
+            <h2>KHANI</h2>
+            <p>ADMIN</p>
+        </div>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li class="active"><a href="produits.html"><i class="fa-solid fa-shirt"></i> Produits</a></li>
+            <li><a href="categories.html"><i class="fa-solid fa-folder"></i> Catégories</a></li>
+            <li><a href="commandes.html"><i class="fa-solid fa-cart-shopping"></i> Commandes</a></li>
+            <li><a href="statistiques.html"><i class="fa-solid fa-chart-pie"></i> Statistiques</a></li>
+            <li><a href="parametres.html"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+        </ul>
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
+    </aside>
+
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <div>
+                <h1>Gestion des Produits 👗</h1>
+                <p>Ajouter, modifier ou supprimer vos articles</p>
+            </div>
+        </header>
+
+        <section class="dashboard-box">
+            <h2><i class="fa-solid fa-plus-circle"></i> Ajouter / Modifier un produit</h2>
+            <form id="produitForm" class="admin-form" enctype="multipart/form-data">
+                <div class="form-row-2">
+                    <input type="text" id="nomProduit" name="nom" placeholder="Nom du produit" required>
+                    <input type="number" id="prixProduit" name="prix" placeholder="Prix (FCFA)" min="0" required>
+                </div>
+                <div class="form-row-2">
+                    <select id="categorieProduit" name="categorie_id" required>
+                        <option value="">Choisir une catégorie</option>
+                    </select>
+                    <input type="number" id="stockProduit" name="stock" placeholder="Stock disponible" min="0" value="10">
+                </div>
+                <textarea id="descriptionProduit" name="description" placeholder="Description du produit" rows="3"></textarea>
+
+                <div class="upload-zone">
+                    <label for="imageProduit" class="upload-label">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Cliquez pour choisir une image (JPG, PNG, WebP — max 5 Mo)</span>
+                        <input type="file" id="imageProduit" name="image" accept="image/*" onchange="previewImage(this, 'imagePreview')">
+                    </label>
+                    <img id="imagePreview" alt="Aperçu" style="display:none">
+                </div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="actifProduit" name="actif" checked>
+                    <span>Produit actif (visible sur le site)</span>
+                </label>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-plus"></i> Ajouter le produit
+                </button>
+            </form>
+        </section>
+
+        <section class="dashboard-box">
+            <h2><i class="fa-solid fa-list"></i> Liste des produits</h2>
+            <div id="listeAdminProduits"></div>
+        </section>
+    </main>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

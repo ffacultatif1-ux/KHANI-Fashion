@@ -1,0 +1,22 @@
+# ============================================================
+# KHANI Fashion - Fichiers ignorés par Git
+# ============================================================
+
+# SECRET : identifiants de base de données (JAMAIS publiés)
+.env
+
+# Modèle de configuration (publié, sans valeurs réelles)
+# .env.example reste suivi par Git volontairement
+
+# Fichiers système Windows
+desktop.ini
+Thumbs.db
+
+# IDE / éditeur
+.vscode/
+
+# Fichiers temporaires de test
+_dbtest.php
+
+# Logs
+*.log

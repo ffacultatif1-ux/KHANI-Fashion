@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres | KHANI Fashion Admin</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body" data-page="parametres">
+
+    <aside class="sidebar">
+        <div class="admin-logo">
+            <i class="fa-solid fa-crown"></i>
+            <h2>KHANI</h2>
+            <p>ADMIN</p>
+        </div>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="produits.html"><i class="fa-solid fa-shirt"></i> Produits</a></li>
+            <li><a href="categories.html"><i class="fa-solid fa-folder"></i> Catégories</a></li>
+            <li><a href="commandes.html"><i class="fa-solid fa-cart-shopping"></i> Commandes</a></li>
+            <li><a href="statistiques.html"><i class="fa-solid fa-chart-pie"></i> Statistiques</a></li>
+            <li class="active"><a href="parametres.html"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+        </ul>
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
+    </aside>
+
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <div>
+                <h1>Paramètres ⚙️</h1>
+                <p>Configuration de KHANI Fashion</p>
+            </div>
+        </header>
+
+        <section class="dashboard-box">
+            <h2><i class="fa-solid fa-store"></i> Informations boutique</h2>
+            <form id="parametreForm" class="admin-form">
+                <div class="form-row-2">
+                    <input type="text" id="nomBoutique" name="nom_boutique" placeholder="Nom de la boutique">
+                    <input type="email" id="emailBoutique" name="email" placeholder="Email de contact">
+                </div>
+                <div class="form-row-2">
+                    <input type="text" id="telephone1" name="telephone1" placeholder="Téléphone 1">
+                    <input type="text" id="telephone2" name="telephone2" placeholder="Téléphone 2">
+                </div>
+                <input type="text" id="adresseBoutique" name="adresse" placeholder="Adresse physique">
+                <input type="text" id="whatsapp" name="whatsapp" placeholder="Numéro WhatsApp (format international, ex: 242061763204)">
+                <p class="form-hint">
+                    <i class="fa-solid fa-info-circle"></i>
+                    Le numéro WhatsApp est utilisé pour les liens de commande automatique.
+                </p>
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-save"></i> Enregistrer les paramètres
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

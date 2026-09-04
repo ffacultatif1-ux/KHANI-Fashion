@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHANI Fashion | Mode Africaine Élégante</title>
+    <meta name="description" content="KHANI Fashion - Boutique en ligne de pagnes africains, robes élégantes, ensembles modernes et accessoires de mode féminine au Congo.">
+    <meta name="keywords" content="Pagne, Wax, Robe, Mode africaine, Congo, Brazzaville, KHANI">
+    <meta property="og:title" content="KHANI Fashion - Mode Africaine Élégante">
+    <meta property="og:description" content="Découvrez notre collection de mode africaine moderne">
+    <meta property="og:type" content="website">
+
+    <!-- Polices & Icônes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Favicon SVG inline -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar-wrap">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-crown"></i>
+                <span>KHANI Fashion</span>
+            </a>
+            <ul class="menu">
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="boutique.html">Boutique</a></li>
+                <li><a href="#categories">Catégories</a></li>
+                <li><a href="#apropos">À propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="icons">
+                <a href="boutique.html" class="icon-btn" title="Rechercher"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="panier.html" class="icon-btn panier-link" title="Panier">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="nombrePanier" class="cart-count">0</span>
+                </a>
+                <button class="menu-toggle" onclick="document.querySelector('.menu').classList.toggle('open')">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Nouvelle collection 2026</span>
+            <h1 class="hero-title">La Mode Africaine qui Sublime Votre Élégance</h1>
+            <p class="hero-subtitle">
+                Découvrez notre collection de pagnes, robes, ensembles, jupes et accessoires
+                sélectionnés avec soin.
+            </p>
+            <div class="hero-actions">
+                <a href="boutique.html" class="btn btn-primary">
+                    <i class="fa-solid fa-bag-shopping"></i> Découvrir la collection
+                </a>
+                <a href="#contact" class="btn btn-ghost">Nous contacter</a>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+        </div>
+    </section>
+
+    <!-- AVANTAGES -->
+    <section class="services">
+        <div class="service-box">
+            <i class="fa-solid fa-truck-fast"></i>
+            <h3>Livraison rapide</h3>
+            <p>Livraison partout au Congo.</p>
+        </div>
+        <div class="service-box">
+            <i class="fa-solid fa-lock"></i>
+            <h3>Paiement sécurisé</h3>
+            <p>Airtel Money, MTN Money et espèces.</p>
+        </div>
+        <div class="service-box">
+            <i class="fa-solid fa-headset"></i>
+            <h3>Service client</h3>
+            <p>Disponible 7j/7.</p>
+        </div>
+        <div class="service-box">
+            <i class="fa-solid fa-medal"></i>
+            <h3>Qualité premium</h3>
+            <p>Produits sélectionnés avec soin.</p>
+        </div>
+    </section>
+
+    <!-- PRODUITS VEDETTES -->
+    <section id="produits" class="section">
+        <div class="section-title">
+            <h2>Nos Produits</h2>
+            <p>Les meilleures tendances de la mode féminine.</p>
+        </div>
+        <div class="products">
+            <div class="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"></i> Chargement des produits...
+            </div>
+        </div>
+        <div class="section-action">
+            <a href="boutique.html" class="btn btn-outline">Voir toute la collection →</a>
+        </div>
+    </section>
+
+    <!-- CATÉGORIES -->
+    <section id="categories" class="section categories">
+        <div class="section-title">
+            <h2>Nos Catégories</h2>
+            <p>Choisissez votre style préféré.</p>
+        </div>
+        <div class="category-container">
+            <a href="boutique.html" class="category-card">
+                <i class="fa-solid fa-shirt"></i>
+                <h3>Pagnes Wax</h3>
+                <span>Découvrir →</span>
+            </a>
+            <a href="boutique.html" class="category-card">
+                <i class="fa-solid fa-person-dress"></i>
+                <h3>Robes</h3>
+                <span>Découvrir →</span>
+            </a>
+            <a href="boutique.html" class="category-card">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <h3>Ensembles</h3>
+                <span>Découvrir →</span>
+            </a>
+            <a href="boutique.html" class="category-card">
+                <i class="fa-solid fa-gem"></i>
+                <h3>Accessoires</h3>
+                <span>Découvrir →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- PROMOTION -->
+    <section class="promotion">
+        <div class="promo-content">
+            <span class="promo-badge">OFFRE LIMITÉE</span>
+            <h2>-20% sur certains articles</h2>
+            <p>Profitez de nos offres spéciales avant la fin de la promotion.</p>
+            <a href="boutique.html" class="btn btn-primary">Acheter maintenant</a>
+        </div>
+    </section>
+
+    <!-- À PROPOS -->
+    <section id="apropos" class="section about">
+        <div class="section-title">
+            <h2>À propos de KHANI Fashion</h2>
+        </div>
+        <div class="about-content">
+            <p>
+                <strong>KHANI Fashion</strong> est une boutique spécialisée dans la vente
+                de pagnes africains, robes élégantes, ensembles modernes et accessoires
+                de mode féminine. Notre objectif est d'offrir des produits de qualité
+                à des prix accessibles, partout au Congo et au-delà.
+            </p>
+        </div>
+    </section>
+
+    <!-- TÉMOIGNAGES -->
+    <section class="section testimonials">
+        <div class="section-title">
+            <h2>Ce que disent nos clientes</h2>
+        </div>
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <h3>Marie</h3>
+                <p>« Les pagnes sont magnifiques et la livraison est rapide. »</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐</div>
+                <h3>Miriame</h3>
+                <p>« Les pagnes, les robes et les ensembles sont magnifiques. Livraison rapide 👍 »</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <h3>Aline</h3>
+                <p>« Très belle qualité. Je recommande cette boutique. ❤️ »</p>
+            </div>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <h3>Princia</h3>
+                <p>« Les pagnes sont très beaux, la livraison est particulièrement rapide. 💖 »</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMANDE RAPIDE -->
+    <section id="commande" class="section commande">
+        <div class="section-title">
+            <h2>Passer une commande</h2>
+            <p>Remplissez ce formulaire, nous vous contactons rapidement.</p>
+        </div>
+        <form id="orderForm" class="form-grid">
+            <input type="text" name="nom" placeholder="Nom complet" required>
+            <input type="tel" name="telephone" placeholder="Téléphone" required>
+            <input type="email" name="email" placeholder="Adresse Email">
+            <input type="text" name="ville" placeholder="Ville">
+            <input type="text" name="produit" placeholder="Produit souhaité" required>
+            <input type="number" name="quantite" placeholder="Quantité" min="1" value="1" required>
+            <textarea name="message" rows="5" placeholder="Votre message..."></textarea>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fa-solid fa-paper-plane"></i> Envoyer la commande
+            </button>
+        </form>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+        <h2>Recevez nos nouveautés</h2>
+        <p>Inscrivez-vous pour recevoir nos promotions.</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Votre Email" required>
+            <button type="submit" class="btn btn-primary">S'inscrire</button>
+        </form>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+        <div class="section-title">
+            <h2>Contact</h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <i class="fa-solid fa-phone"></i>
+                <span data-contact="phone1">+242 06 176 32 04</span>
+            </div>
+            <div class="contact-item">
+                <i class="fa-solid fa-phone"></i>
+                <span data-contact="phone2">+242 06 526 92 13</span>
+            </div>
+            <div class="contact-item">
+                <i class="fa-solid fa-envelope"></i>
+                <span data-contact="email">khanihenoc8@gmail.com</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>KHANI Fashion</h3>
+                <p>Votre boutique de référence pour la mode féminine africaine.</p>
+            </div>
+            <div>
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="boutique.html">Boutique</a></li>
+                    <li><a href="panier.html">Panier</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Suivez-nous</h4>
+                <div class="social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="footer-copy">© 2026 KHANI Fashion. Tous droits réservés.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

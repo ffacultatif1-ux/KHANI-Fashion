@@ -1,0 +1,14 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E91E63"/>
+      <stop offset="100%" stop-color="#6A1B9A"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g)"/>
+  <g fill="white" font-family="Poppins, Arial, sans-serif" text-anchor="middle">
+    <text x="200" y="180" font-size="60" opacity="0.3">👗</text>
+    <text x="200" y="240" font-size="22" font-weight="bold">KHANI Fashion</text>
+    <text x="200" y="270" font-size="14" opacity="0.8">Image à venir</text>
+  </g>
+</svg>

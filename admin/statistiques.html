@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques | KHANI Fashion Admin</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body" data-page="statistiques">
+
+    <aside class="sidebar">
+        <div class="admin-logo">
+            <i class="fa-solid fa-crown"></i>
+            <h2>KHANI</h2>
+            <p>ADMIN</p>
+        </div>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="produits.html"><i class="fa-solid fa-shirt"></i> Produits</a></li>
+            <li><a href="categories.html"><i class="fa-solid fa-folder"></i> Catégories</a></li>
+            <li><a href="commandes.html"><i class="fa-solid fa-cart-shopping"></i> Commandes</a></li>
+            <li class="active"><a href="statistiques.html"><i class="fa-solid fa-chart-pie"></i> Statistiques</a></li>
+            <li><a href="parametres.html"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+        </ul>
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
+    </aside>
+
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <div>
+                <h1>Statistiques 📈</h1>
+                <p>Analyse détaillée de votre boutique</p>
+            </div>
+        </header>
+
+        <section class="stats">
+            <div class="stat-card stat-card--rose">
+                <i class="fa-solid fa-money-bill"></i>
+                <div>
+                    <h3 id="statVentes">0 FCFA</h3>
+                    <p>Chiffre d'affaires</p>
+                </div>
+            </div>
+            <div class="stat-card stat-card--violet">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <div>
+                    <h3 id="statCommandes">0</h3>
+                    <p>Commandes totales</p>
+                </div>
+            </div>
+            <div class="stat-card stat-card--gold">
+                <i class="fa-solid fa-users"></i>
+                <div>
+                    <h3 id="statVisiteurs">0</h3>
+                    <p>Visiteurs uniques</p>
+                </div>
+            </div>
+            <div class="stat-card stat-card--rose">
+                <i class="fa-solid fa-star"></i>
+                <div>
+                    <h3 id="statTopProduit">-</h3>
+                    <p>Top produit</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="dashboard-grid-2">
+            <section class="dashboard-box">
+                <h2><i class="fa-solid fa-chart-bar"></i> Ventes des 7 derniers jours</h2>
+                <div id="graphiqueVente"></div>
+            </section>
+
+            <section class="dashboard-box">
+                <h2><i class="fa-solid fa-chart-pie"></i> Répartition des statuts</h2>
+                <div id="repartitionStatuts"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

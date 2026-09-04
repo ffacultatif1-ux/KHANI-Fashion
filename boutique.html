@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique | KHANI Fashion</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar-wrap">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-crown"></i>
+                <span>KHANI Fashion</span>
+            </a>
+            <ul class="menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="boutique.html" class="active">Boutique</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="icons">
+                <a href="panier.html" class="icon-btn panier-link">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="nombrePanier" class="cart-count">0</span>
+                </a>
+                <button class="menu-toggle" onclick="document.querySelector('.menu').classList.toggle('open')">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>Notre Collection</h1>
+        <p>Découvrez nos pagnes et vêtements féminins</p>
+    </section>
+
+    <section class="filtres-section">
+        <div class="filtres">
+            <div class="filtre-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="rechercheProduit" placeholder="Rechercher un vêtement...">
+            </div>
+            <select id="filtreCategorie">
+                <option value="all">Toutes les catégories</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="produits-section">
+        <h2>Nos produits KHANI Fashion</h2>
+        <div id="listeProduits" class="produits-grid">
+            <div class="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"></i> Chargement...
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>KHANI Fashion</h3>
+                <p>La mode africaine moderne</p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>📞 <span data-contact="phone1">+242 06 176 32 04</span></p>
+                <p>📞 <span data-contact="phone2">+242 06 526 92 13</span></p>
+                <p>✉ <span data-contact="email">khanihenoc8@gmail.com</span></p>
+            </div>
+        </div>
+        <p class="footer-copy">© 2026 KHANI Fashion. Tous droits réservés.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
